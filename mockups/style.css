@@ -1,0 +1,86 @@
+/***************
+GENERAL
+***************/
+
+header {
+    background-color: #333;
+    padding: 8px;
+}
+
+body {
+    background-color: #EFEFEF;
+    font-family: 'Lato', sans-serif;
+    margin: 0;
+}
+
+nav ul li {
+    display: inline-block;
+    list-style: none;
+}
+
+nav a {
+    font-size: 1.5em;
+    color: #EEE;
+    padding: 12px;
+}
+
+section {
+    margin: 3%;
+}
+
+a {
+    text-decoration: none;
+    color: #000;
+}
+
+h1 {
+    margin-bottom: 0.3em
+}
+h5 {
+    margin-bottom: 0.1em;
+    margin-top: 0.2em;
+}
+
+textarea {
+    font-family: 'Lato', sans-serif;
+}
+
+footer {
+    margin: 1%;
+}
+
+
+
+/***************
+CLASS STUFF
+***************/
+
+.active {
+    font-weight: 700;
+}
+
+.btn {
+    background-color: #FFF;
+    color: #111;
+    text-decoration: none;
+    border: 1px solid;
+    padding: 4px;
+}
+
+.btn:active {
+    background-color: #EEE;
+    color: #000;
+}
+
+.titleDivider {
+    width: 200px;
+    float: left;
+    margin: 0;
+}
+
+
+
+/***************
+OTHER STUFF
+***************/
+
