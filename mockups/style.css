@@ -24,6 +24,10 @@ nav a {
     padding: 12px;
 }
 
+nav a:hover {
+    color: #5D96B0;
+}
+
 section {
     margin: 3%;
 }
@@ -72,15 +76,20 @@ CLASS STUFF
     color: #000;
 }
 
+.btn:hover {
+    color: #5D96B0;
+}
+
 .titleDivider {
     width: 200px;
     float: left;
     margin: 0;
 }
 
+.headingLink {
+    font-weight: 400;
+}
 
-
-/***************
-OTHER STUFF
-***************/
-
+.headingLink:hover {
+    color: #5D96B0;
+}
