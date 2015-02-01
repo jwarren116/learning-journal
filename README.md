@@ -17,3 +17,7 @@ You should make an effort to make the pages in your mockup look as unified as po
 You must also include a CSS stylesheet in your repository that contains the styles needed to display the site.  The HTML mockup pages should use this stylesheet via a "link" tag in the HTML head section.
 
 You may not use any pre-existing CSS framework, like Bootstrap or Zurb Foundation.
+
+1/31/15
+=======
+I have included generic faux-entries in my mockups. These mockups help me to see what the ultimate product will look like.
