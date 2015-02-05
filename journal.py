@@ -29,9 +29,9 @@ logging.basicConfig()
 log = logging.getLogger(__file__)
 
 
-@view_config(route_name='home', renderer='string')
-def home(request):
-    return "Hello World"
+# @view_config(route_name='home', renderer='string')
+# def home(request):
+#     return "Hello world!"
 
 
 def write_entry(request):
@@ -41,6 +41,7 @@ def write_entry(request):
     request.db.cursor().execute(INSERT_ENTRY, [title, text, time])
 
 
+@view_config(route_name='home', renderer='templates/list.jinja2')
 def read_entries(request):
     cursor = request.db.cursor()
     cursor.execute(READ_ENTRIES)
