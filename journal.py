@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS entries (
 )
 """
 
-INSERT_ENTRY = "INSERT INTO entries (title, text, time) VALUES(%s, %s, %s);"
+INSERT_ENTRY = "INSERT INTO entries (title, text, created) VALUES(%s, %s, %s)"
 
 READ_ENTRIES = "SELECT id, title, text, created FROM entries ORDER BY created DESC;"
 
@@ -37,8 +37,8 @@ log = logging.getLogger(__file__)
 def write_entry(request):
     title = request.params.get('title', None)
     text = request.params.get('text', None)
-    time = datetime.datetime.utcnow()
-    request.db.cursor().execute(INSERT_ENTRY, [title, text, time])
+    created = datetime.datetime.utcnow()
+    request.db.cursor().execute(INSERT_ENTRY, [title, text, created])
 
 
 @view_config(route_name='home', renderer='templates/list.jinja2')
