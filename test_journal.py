@@ -3,6 +3,7 @@ from contextlib import closing
 from pyramid import testing
 import pytest
 import datetime
+import os
 from journal import connect_db
 from journal import DB_SCHEMA
 from journal import INSERT_ENTRY
@@ -66,6 +67,15 @@ def req_context(db, request):
         clear_entries(settings)
 
 
+@pytest.fixture(scope='function')
+def app(db):
+    from journal import main
+    from webtest import TestApp
+    os.environ['DATABASE_URL'] = TEST_DSN
+    app = main()
+    return TestApp(app)
+
+
 def test_write_entry(req_context):
     from journal import write_entry
     fields = ('title', 'text')
@@ -107,3 +117,11 @@ def test_read_entries(req_context):
         assert expected[1] == entry['text']
         for key in 'id', 'created':
             assert key in entry
+
+
+def test_empty_listing(app):
+    response = app.get('/')
+    assert response.status_code == 200
+    actual = response.body
+    expected = 'No entries here so far'
+    assert expected in actual
