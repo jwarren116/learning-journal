@@ -3,6 +3,7 @@
 import os
 import logging
 import psycopg2
+import transaction
 from contextlib import closing
 from pyramid.config import Configurator
 from pyramid.session import SignedCookieSessionFactory
@@ -51,6 +52,22 @@ def open_connection(event):
     request = event.request
     settings = request.registry.settings
     request.db = connect_db(settings)
+    request.add_finished_callback(close_connection)
+
+
+def close_connection(request):
+    """close the database connection for this request
+
+    If there has been an error in the processing of the request, abort any
+    open transactions.
+    """
+    db = getattr(request, 'db', None)
+    if db is not None:
+        if request.exception is not None:
+            db.rollback()
+        else:
+            db.commit()
+        request.db.close()
 
 
 def main():
