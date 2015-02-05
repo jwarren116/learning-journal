@@ -23,6 +23,8 @@ CREATE TABLE IF NOT EXISTS entries (
 
 INSERT_ENTRY = "INSERT INTO entries (title, text, time) VALUES(%s, %s, %s);"
 
+READ_ENTRIES = "SELECT id, title, text, created FROM entries ORDER BY created DESC;"
+
 logging.basicConfig()
 log = logging.getLogger(__file__)
 
@@ -30,6 +32,21 @@ log = logging.getLogger(__file__)
 @view_config(route_name='home', renderer='string')
 def home(request):
     return "Hello World"
+
+
+def write_entry(request):
+    title = request.params.get('title', None)
+    text = request.params.get('text', None)
+    time = datetime.datetime.utcnow()
+    request.db.cursor().execute(INSERT_ENTRY, [title, text, time])
+
+
+def read_entries(request):
+    cursor = request.db.cursor()
+    cursor.execute(READ_ENTRIES)
+    keys = ('id', 'title', 'text', 'created')
+    entries = [dict(zip(keys, row)) for row in cursor.fetchall()]
+    return {'entries': entries}
 
 
 def connect_db(settings):
@@ -93,13 +110,6 @@ def main():
     config.scan()
     app = config.make_wsgi_app()
     return app
-
-
-def write_entry(request):
-    title = request.params.get('title', None)
-    text = request.params.get('text', None)
-    time = datetime.datetime.utcnow()
-    request.db.cursor().execute(INSERT_ENTRY, [title, text, time])
 
 
 if __name__ == '__main__':
