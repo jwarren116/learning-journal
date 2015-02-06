@@ -5,7 +5,7 @@ import logging
 import psycopg2
 import transaction
 import datetime
-from cryptacular.bvrypt import BCRYPTPasswordManager
+from cryptacular.bcrypt import BCRYPTPasswordManager
 from contextlib import closing
 from pyramid.config import Configurator
 from pyramid.session import SignedCookieSessionFactory
