@@ -5,6 +5,7 @@ import logging
 import psycopg2
 import transaction
 import datetime
+from cryptacular.bvrypt import BCRYPTPasswordManager
 from contextlib import closing
 from pyramid.config import Configurator
 from pyramid.session import SignedCookieSessionFactory
@@ -123,7 +124,10 @@ def main():
         'DATABASE_URL', 'dbname=learning_journal user=jwarren'
     )
     settings['auth.username'] = os.environ.get('AUTH_USERNAME', 'admin')
-    settings['auth.password'] = os.environ.get('AUTH_PASSWORD', 'secret')
+    manager = BCRYPTPasswordManager()
+    settings['auth.password'] = os.environ.get(
+        'AUTH_PASSWORD', manager.encode('secret')
+    )
 
     secret = os.environ.get('JOURNAL_SESSION_SECRET', 'itsaseekrit')
     session_factory = SignedCookieSessionFactory(secret)

@@ -4,6 +4,7 @@ from pyramid import testing
 import pytest
 import datetime
 import os
+from cryptacular.bcrypt import BCRYPTPasswordManager
 from journal import connect_db
 from journal import DB_SCHEMA
 from journal import INSERT_ENTRY
@@ -78,9 +79,10 @@ def app(db):
 
 @pytest.fixture(scope='function')
 def auth_req(request):
+    manager = BCRYPTPasswordManager()
     settings = {
         'auth.username': 'admin',
-        'auth.password': 'secret',
+        'auth.password': manager.encode('secret'),
     }
     testing.setUp(settings=settings)
     req = testing.DummyRequest()
