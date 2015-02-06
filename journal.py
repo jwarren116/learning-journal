@@ -63,6 +63,13 @@ def login(request):
     return {'error': error, 'username': username}
 
 
+@view_config(route_name='logout')
+def logout(request):
+    """remove authentication from a session"""
+    headers = forget(request)
+    return HTTPFound(request.route_url('home'), headers=headers)
+
+
 @view_config(route_name='add', request_method='POST')
 def add_entry(request):
     try:
@@ -167,6 +174,7 @@ def main():
     config.add_route('home', '/')
     config.add_route('add', '/add')
     config.add_route('login', '/login')
+    config.add_route('logout', '/logout')
     config.scan()
     app = config.make_wsgi_app()
     return app
