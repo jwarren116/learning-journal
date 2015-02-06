@@ -14,6 +14,7 @@ from pyramid.events import NewRequest, subscriber
 from pyramid.httpexceptions import HTTPFound, HTTPInternalServerError
 from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
+from pyramid.security import remember, forget
 from waitress import serve
 
 DB_SCHEMA = """
@@ -40,6 +41,26 @@ def write_entry(request):
     text = request.params.get('text', None)
     created = datetime.datetime.utcnow()
     request.db.cursor().execute(INSERT_ENTRY, [title, text, created])
+
+
+@view_config(route_name='login', renderer="templates/login.jinja2")
+def login(request):
+    """authenticate a user by username/password"""
+    username = request.params.get('username', '')
+    error = ''
+    if request.method == 'POST':
+        error = "Login Failed"
+        authenticated = False
+        try:
+            authenticated = do_login(request)
+        except ValueError as e:
+            error = str(e)
+
+        if authenticated:
+            headers = remember(request, username)
+            return HTTPFound(request.route_url('home'), headers=headers)
+
+    return {'error': error, 'username': username}
 
 
 @view_config(route_name='add', request_method='POST')
@@ -145,6 +166,7 @@ def main():
     config.include('pyramid_jinja2')
     config.add_route('home', '/')
     config.add_route('add', '/add')
+    config.add_route('login', '/login')
     config.scan()
     app = config.make_wsgi_app()
     return app
