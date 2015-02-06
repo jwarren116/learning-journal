@@ -17,6 +17,8 @@ from pyramid.authorization import ACLAuthorizationPolicy
 from pyramid.security import remember, forget
 from waitress import serve
 
+here = os.path.dirname(os.path.abspath(__file__))
+
 DB_SCHEMA = """
 CREATE TABLE IF NOT EXISTS entries (
     id serial PRIMARY KEY,
@@ -175,6 +177,7 @@ def main():
     config.add_route('add', '/add')
     config.add_route('login', '/login')
     config.add_route('logout', '/logout')
+    config.add_static_view('static', os.path.join(here, 'static'))
     config.scan()
     app = config.make_wsgi_app()
     return app
