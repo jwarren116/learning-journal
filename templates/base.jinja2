@@ -3,36 +3,37 @@
   <head>
     <meta charset="utf-8">
     <title>James Warren | Learning Journal</title>
-    <link href='http://fonts.googleapis.com/css?family=Lato:400,400italic,700,700italic' rel='stylesheet' type='text/css'>    <!--[if lt IE 9]>
+    <link href='http://fonts.googleapis.com/css?family=Lato:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link href="/static/style.css" rel="stylesheet" type="text/css">
+    <!--[if lt IE 9]>
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link href="/static/style.css" rel="stylesheet" type="text/css">
   </head>
+  
   <body>
     <header>
-      <aside id="user-controls">
-        <ul>
-        {% if not request.authenticated_userid %}
-          <li><a href="{{ request.route_url('login') }}">log in</a></li>
-        {% else %}
-          <li><a href="{{ request.route_url('logout') }}">log out</a></li>
-        {% endif %}
-        </ul>
-      </aside>
       <nav>
-          <ul>
-              <li class="active"><a href="index.html">Home</a></li>
-          </ul>
+        <ul>
+          <li class="active"><a href="/">Home</a></li>
+            {% if not request.authenticated_userid %}
+          <li><a href="{{ request.route_url('login') }}">Log In</a></li>
+            {% else %}
+          <li><a href="{{ request.route_url('logout') }}">Log Out</a></li>
+            {% endif %}
+        </ul>
       </nav>
     </header>
     <main>
+      <section>
       <h1>My Python Journal</h1>
-      <section id="content">
+      <hr>
+
       {% block body %}{% endblock %}
+      
       </section>
     </main>
     <footer>
-        <p>James Warren's Learning Journal</p>
+      <p><small>James Warren's Learning Journal</small></p>
     </footer>
   </body>
 </html>

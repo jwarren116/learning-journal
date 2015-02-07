@@ -38,11 +38,20 @@ a {
 }
 
 h1 {
-    margin-bottom: 0.3em
+    margin-bottom: 0.3em;
+    margin-top: 2em;
+
 }
+
+}
+
 h5 {
     margin-bottom: 0.1em;
     margin-top: 0.2em;
+}
+
+p {
+    margin-top: 6px;
 }
 
 textarea {
@@ -50,7 +59,7 @@ textarea {
 }
 
 footer {
-    margin: 1%;
+    margin: 3%;
 }
 
 
