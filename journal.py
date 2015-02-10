@@ -34,6 +34,10 @@ READ_ENTRIES = """
     SELECT id, title, text, created FROM entries ORDER BY created DESC
     """
 
+READ_ENTRY = """
+    SELECT id, title, text, created FROM entries WHERE id = %s
+    """
+
 logging.basicConfig()
 log = logging.getLogger(__file__)
 
@@ -93,11 +97,12 @@ def read_entries(request):
 
 @view_config(route_name='detail', renderer='templates/detail.jinja2')
 def detail_entry(request):
+    post_id = request.params.get('id', None)
     cursor = request.db.cursor()
-    cursor.execute(READ_ENTRIES)
+    cursor.execute(READ_ENTRY, [post_id])
     keys = ('id', 'title', 'text', 'created')
-    title = [dict(zip(keys, row)) for row in cursor.fetchall()]
-    return {'title': title}
+    entry = [dict(zip(keys, row)) for row in cursor.fetchall()]
+    return {'entry': entry}
 
 
 def connect_db(settings):
@@ -186,7 +191,7 @@ def main():
     config.add_route('add', '/add')
     config.add_route('login', '/login')
     config.add_route('logout', '/logout')
-    config.add_route('detail', '/{title|replace(' ', '')}')
+    config.add_route('detail', '/detail/{post_id}')
     config.add_static_view('static', os.path.join(here, 'static'))
     config.scan()
     app = config.make_wsgi_app()
