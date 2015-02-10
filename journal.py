@@ -91,6 +91,15 @@ def read_entries(request):
     return {'entries': entries}
 
 
+@view_config(route_name='detail', renderer='templates/detail.jinja2')
+def detail_entry(request):
+    cursor = request.db.cursor()
+    cursor.execute(READ_ENTRIES)
+    keys = ('id', 'title', 'text', 'created')
+    title = [dict(zip(keys, row)) for row in cursor.fetchall()]
+    return {'title': title}
+
+
 def connect_db(settings):
     """Returns a connection to the configured database"""
     return psycopg2.connect(settings['db'])
@@ -177,6 +186,7 @@ def main():
     config.add_route('add', '/add')
     config.add_route('login', '/login')
     config.add_route('logout', '/logout')
+    config.add_route('detail', '/{title|replace(' ', '')}')
     config.add_static_view('static', os.path.join(here, 'static'))
     config.scan()
     app = config.make_wsgi_app()

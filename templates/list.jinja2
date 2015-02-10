@@ -20,7 +20,7 @@
 {% endif %}
 {% for entry in entries %}
 <article id="entry={{entry.id}}">
-  <h1 class="headingLink">{{ entry.title }}</h1>
+  <a href="/{{ entry.title|replace(' ', '') }}"><h1 class="headingLink">{{ entry.title }}</h1></a>
   <p><small>{{ entry.created.strftime('%b. %d, %Y') }}</small>
   <div>
     {{ entry.text|safe }}
