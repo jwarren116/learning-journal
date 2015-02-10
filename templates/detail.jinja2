@@ -2,11 +2,11 @@
 
 {% block body %}
 
-<article id="title={{title.id}}">
-  <h1 class="headingLink">{{ title.title }}</h1>
+<article id="title={{ entry.id }}">
+  <h1 class="headingLink">{{ entry.title }}</h1>
   <p><small>{{ entry.created.strftime('%b. %d, %Y') }}</small>
   <div>
-    {{ title.text|safe }}
+    {{ entry.text|safe }}
     </br></br>
     <hr class="titleDivider">
   </div>
