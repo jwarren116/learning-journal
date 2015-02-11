@@ -1,6 +1,8 @@
 {% extends "base.jinja2" %}
 
 {% block body %}
+<h1>My Python Journal</h1>
+<hr>
 {% if request.authenticated_userid %}
 <aside>
 <form action="{{ request.route_url('add') }}" method="POST">

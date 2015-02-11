@@ -2,14 +2,16 @@
 
 {% block body %}
 
-<article id="title={{ entry.id }}">
-  <h1 class="headingLink">{{ entry.title }}</h1>
-  <p><small>{{ entry.created.strftime('%b. %d, %Y') }}</small>
-  <div>
-    {{ entry.text|safe }}
-    </br></br>
-    <hr class="titleDivider">
-  </div>
-</article>
+{% for entry in entry %}
+    <article id="title={{ entry.id }}">
+      <h1 class="headingLink">{{ entry.title }}</h1>
+      <p><small>{{ entry.created.strftime('%b. %d, %Y') }}</small>
+      <div>
+        {{ entry.text|safe }}
+        </br></br>
+        <hr class="titleDivider">
+      </div>
+    </article>
+{% endfor %}
 
 {% endblock %}

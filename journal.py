@@ -97,7 +97,7 @@ def read_entries(request):
 
 @view_config(route_name='detail', renderer='templates/detail.jinja2')
 def detail_entry(request):
-    post_id = request.params.get('id', None)
+    post_id = request.matchdict.get('id', None)
     cursor = request.db.cursor()
     cursor.execute(READ_ENTRY, [post_id])
     keys = ('id', 'title', 'text', 'created')
@@ -185,13 +185,14 @@ def main():
             secret=auth_secret,
             hashalg='sha512'
             ),
+        # filter|markdown
     )
     config.include('pyramid_jinja2')
     config.add_route('home', '/')
     config.add_route('add', '/add')
     config.add_route('login', '/login')
     config.add_route('logout', '/logout')
-    config.add_route('detail', '/detail/{post_id}')
+    config.add_route('detail', '/detail/{id}')
     config.add_static_view('static', os.path.join(here, 'static'))
     config.scan()
     app = config.make_wsgi_app()
