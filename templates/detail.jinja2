@@ -7,7 +7,7 @@
       <h1 class="headingLink">{{ entry.title }}</h1>
       <p><small>{{ entry.created.strftime('%b. %d, %Y') }}</small>
       <div>
-        {{ entry.text|safe }}
+        {{ entry.text|markdown|safe }}
         </br></br>
         <hr class="titleDivider">
       </div>

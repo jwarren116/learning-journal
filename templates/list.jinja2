@@ -7,11 +7,11 @@
 <aside>
 <form action="{{ request.route_url('add') }}" method="POST">
   <div>
-    <label for="title">Title</label>
+    <label for="title">Title</label></br>
     <input type="text" size="30" name="title" id="title"/>
   </div>
   <div>
-    <label for="text">Text</label>
+    <label for="text">Text</label></br>
     <textarea name="text" id="text" rows="5" cols="80"></textarea>
   </div>
   <div>
@@ -25,7 +25,7 @@
   <a href="/detail/{{ entry.id }}"><h1 class="headingLink">{{ entry.title }}</h1></a>
   <p><small>{{ entry.created.strftime('%b. %d, %Y') }}</small>
   <div>
-    {{ entry.text|safe }}
+    {{ entry.text|markdown|safe }}
     </br></br>
     <hr class="titleDivider">
   </div>

@@ -16,6 +16,10 @@ from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
 from pyramid.security import remember, forget
 from waitress import serve
+import markdown
+import jinja2
+# from jinja2 import environmentfilter
+
 
 here = os.path.dirname(os.path.abspath(__file__))
 
@@ -159,8 +163,14 @@ def close_connection(request):
         request.db.close()
 
 
+# @environmentfilter
+def markd(input):
+    return markdown.markdown(input)
+
+
 def main():
     """Create a configured wsgi app"""
+    jinja2.filters.FILTERS['markdown'] = markd
     settings = {}
     settings['reload_all'] = os.environ.get('DEBUG', True)
     settings['debug_all'] = os.environ.get('DEBUG', True)
@@ -185,7 +195,6 @@ def main():
             secret=auth_secret,
             hashalg='sha512'
             ),
-        # filter|markdown
     )
     config.include('pyramid_jinja2')
     config.add_route('home', '/')
