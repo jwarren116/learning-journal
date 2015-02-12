@@ -26,10 +26,11 @@
   <p><small>{{ entry.created.strftime('%b. %d, %Y') }}</small>
   <div>
     {{ entry.text|markdown|safe }}
-    </br></br>
+    </br>
       {% if request.authenticated_userid %}
-        <a href="/edit/{{ entry.id }}">Edit Post</a>
+        <a href="/edit/{{ entry.id }}">Edit Post</a></br>
       {% endif %}
+    </br>
     <hr class="titleDivider">
   </div>
 </article>
