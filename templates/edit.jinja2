@@ -1,8 +1,8 @@
 {% extends "base.jinja2" %}
 
 {% block body %}
+{% if request.authenticated_userid %}
 
-{% for entry in entry %}
 <form action="{{ request.route_url('edit', id=entry.id) }}" method="POST">
   <div>
     <label for="title">Title</label></br>
@@ -16,6 +16,8 @@
     <input class="btn" type="submit" value="Share" name="Share"/>
   </div>
 </form>
-{% endfor %}
 
+{% else %}
+<h1>Access Denied</h1>
+{% endif %}
 {% endblock %}

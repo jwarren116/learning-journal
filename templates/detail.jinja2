@@ -2,16 +2,14 @@
 
 {% block body %}
 
-{% for entry in entry %}
-    <article id="title={{ entry.id }}">
-      <h1 class="headingLink">{{ entry.title }}</h1>
-      <p><small>{{ entry.created.strftime('%b. %d, %Y') }}</small>
-      <div>
-        {{ entry.text|markdown|safe }}
-        </br></br>
-        <hr class="titleDivider">
-      </div>
-    </article>
-{% endfor %}
+<article id="title={{ entry.id }}">
+  <h1 class="headingLink">{{ entry.title }}</h1>
+  <p><small>{{ entry.created.strftime('%b. %d, %Y') }}</small>
+  <div>
+    {{ entry.text|markdown|safe }}
+    </br></br>
+    <hr class="titleDivider">
+  </div>
+</article>
 
 {% endblock %}
