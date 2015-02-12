@@ -109,6 +109,21 @@ def detail_entry(request):
     return {'entry': entry}
 
 
+@view_config(route_name='edit', request_method='POST')
+def edit(request):
+    pass
+
+
+@view_config(route_name='edit', renderer='templates/edit.jinja2')
+def edit_entry(request):
+    post_id = request.matchdict.get('id', None)
+    cursor = request.db.cursor()
+    cursor.execute(READ_ENTRY, [post_id])
+    keys = ('id', 'title', 'text', 'created')
+    entry = [dict(zip(keys, row)) for row in cursor.fetchall()]
+    return {'entry': entry}
+
+
 def connect_db(settings):
     """Returns a connection to the configured database"""
     return psycopg2.connect(settings['db'])
@@ -163,7 +178,6 @@ def close_connection(request):
         request.db.close()
 
 
-# @environmentfilter
 def markd(input):
     return markdown.markdown(input)
 
@@ -202,6 +216,7 @@ def main():
     config.add_route('login', '/login')
     config.add_route('logout', '/logout')
     config.add_route('detail', '/detail/{id}')
+    config.add_route('edit', '/edit/{id}')
     config.add_static_view('static', os.path.join(here, 'static'))
     config.scan()
     app = config.make_wsgi_app()
