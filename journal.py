@@ -39,8 +39,12 @@ READ_ENTRIES = """
     """
 
 READ_ENTRY = """
-    SELECT id, title, text, created FROM entries WHERE id = %s
-    """
+SELECT id, title, text, created FROM entries WHERE id = %s
+"""
+
+UPDATE_ENTRY = """
+UPDATE entries SET (title, text, created) = (%s, %s, %s) WHERE id = %s
+"""
 
 logging.basicConfig()
 log = logging.getLogger(__file__)
@@ -96,6 +100,8 @@ def read_entries(request):
     cursor.execute(READ_ENTRIES)
     keys = ('id', 'title', 'text', 'created')
     entries = [dict(zip(keys, row)) for row in cursor.fetchall()]
+    for e in entries:
+        e['text'] = markdown.markdown(e['text'], extension=['CodeHilite', 'fenced_code'])
     return {'entries': entries}
 
 
@@ -106,12 +112,26 @@ def detail_entry(request):
     cursor.execute(READ_ENTRY, [post_id])
     keys = ('id', 'title', 'text', 'created')
     entry = [dict(zip(keys, row)) for row in cursor.fetchall()]
+    for e in entry:
+        e['text'] = markdown.markdown(e['text'], extension=['CodeHilite', 'fenced_code'])
     return {'entry': entry}
+
+
+def update_entry(request, id):
+    title = request.params.get('title')
+    text = request.params.get('text')
+    created = datetime.datetime.utcnow()
+    request.db.cursor().execute(UPDATE_ENTRY, [title, text, created, id])
 
 
 @view_config(route_name='edit', request_method='POST')
 def edit(request):
-    pass
+    try:
+        id = request.matchdict['id']
+        update_entry(request, id)
+    except psycopg2.Error:
+        return HTTPInternalServerError
+    return HTTPFound(request.route_url('home'))
 
 
 @view_config(route_name='edit', renderer='templates/edit.jinja2')
@@ -179,7 +199,7 @@ def close_connection(request):
 
 
 def markd(input):
-    return markdown.markdown(input)
+    return markdown.markdown(input, extension=["CodeHilite"])
 
 
 def main():
