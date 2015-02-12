@@ -101,7 +101,7 @@ def read_entries(request):
     keys = ('id', 'title', 'text', 'created')
     entries = [dict(zip(keys, row)) for row in cursor.fetchall()]
     for e in entries:
-        e['text'] = markdown.markdown(e['text'], extension=['CodeHilite', 'fenced_code'])
+        e['text'] = markdown.markdown(e['text'], extensions=['codehilite', 'fenced_code'])
     return {'entries': entries}
 
 
@@ -113,7 +113,7 @@ def detail_entry(request):
     keys = ('id', 'title', 'text', 'created')
     entry = [dict(zip(keys, row)) for row in cursor.fetchall()]
     for e in entry:
-        e['text'] = markdown.markdown(e['text'], extension=['CodeHilite', 'fenced_code'])
+        e['text'] = markdown.markdown(e['text'], extensions=['codehilite', 'fenced_code'])
     return {'entry': entry}
 
 
@@ -199,7 +199,7 @@ def close_connection(request):
 
 
 def markd(input):
-    return markdown.markdown(input, extension=["CodeHilite"])
+    return markdown.markdown(input, extension=['CodeHilite'])
 
 
 def main():
