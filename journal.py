@@ -20,7 +20,6 @@ from pyramid.security import remember, forget
 from waitress import serve
 
 
-
 here = os.path.dirname(os.path.abspath(__file__))
 
 DB_SCHEMA = """
@@ -134,7 +133,7 @@ def logout(request):
 
 @view_config(route_name='add', request_method='POST')
 def add_entry(request):
-    if request.authenticated_userid():
+    if request.authenticated_userid:
         try:
             write_entry(request)
         except psycopg2.Error:
@@ -162,9 +161,8 @@ def detail_entry(request):
     cursor = request.db.cursor()
     cursor.execute(READ_ENTRY, [post_id])
     keys = ('id', 'title', 'text', 'created')
-    entry = [dict(zip(keys, row)) for row in cursor.fetchall()]
-    for e in entry:
-        e['text'] = markdown.markdown(e['text'], extensions=['codehilite', 'fenced_code'])
+    entry = dict(zip(keys, cursor.fetchone()))
+    entry['text'] = markdown.markdown(entry['text'], extensions=['codehilite', 'fenced_code'])
     return {'entry': entry}
 
 
@@ -175,7 +173,7 @@ def edit_entry(request):
         cursor = request.db.cursor()
         cursor.execute(READ_ENTRY, [post_id])
         keys = ('id', 'title', 'text', 'created')
-        entry = [dict(zip(keys, row)) for row in cursor.fetchone()]
+        entry = dict(zip(keys, cursor.fetchone()))
         if request.method == 'POST':
             try:
                 id = request.matchdict['id']
