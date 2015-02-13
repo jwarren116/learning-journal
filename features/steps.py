@@ -9,16 +9,41 @@ from journal import INSERT_ENTRY
 
 from pyramid import testing
 
-TEST_DSN = 'dbname=test_learning_journal user=ndraper2'
+TEST_DSN = 'dbname=test_learning_journal user=jwarren'
 settings = {'db': TEST_DSN}
-INPUT_BTN = '<input type="submit" value="Share" name="Share"/>'
+INPUT_BTN = '<input class="btn" type="submit" value="Share" name="Share"/>'
+
+
+# @world.absorb
+# def make_an_entry(app):
+#     entry_data = {
+#         'title': 'Hello there',
+#         'text': 'This is a post',
+#     }
+#     response = app.post('/add', params=entry_data, status='3*')
+#     return response
+
+
+# @world.absorb
+# def make_md_entry(app):
+#     entry_data = {
+#         'title': 'Hello there',
+#         'text': '##This is a heading',
+#     }
+#     response = app.post('/add', params=entry_data, status='3*')
+#     return response
 
 
 @world.absorb
 def make_an_entry(app):
     entry_data = {
         'title': 'Hello there',
-        'text': 'This is a post',
+        'text': '''##This is a post
+
+```python
+    def func(x):
+        return x
+```''',
     }
     response = app.post('/add', params=entry_data, status='3*')
     return response
@@ -48,7 +73,7 @@ def clear_db(total):
         db.commit()
 
 
-@after.each_scenario
+@after.each_feature
 def clear_entries(scenario):
     with closing(connect_db(settings)) as db:
         db.cursor().execute("DELETE FROM entries")
@@ -73,23 +98,93 @@ def get_home_page(step):
     assert expected in actual
 
 
-@step('When I click on the entry link')
+@step('I click on the entry link')
 def click_on_the_entry_link(step):
+    login_helper('admin', 'secret', world.app)
     world.make_an_entry(world.app)
-    response = world.app.get('/1')
+    response = world.app.get('/')
+    response.click(href='detail/1')
     assert response.status_code == 200
-    # actual = response.body
-    # for expected in entry[:2]:
-    #     assert expected in actual
+
+
+@step('I get the detail page for that entry')
+def get_detail_page(step):
+    response = world.app.get('/detail/1')
+    assert response.status_code == 200
+    assert 'This is a post' in response.body
 
 
 @step('a logged in user')
 def a_logged_in_user(step):
-    username, password = ('admin', 'secret')
-    app = world.app
-    redirect = login_helper(username, password, app)
+    redirect = login_helper('admin', 'secret', world.app)
     assert redirect.status_code == 302
     response = redirect.follow()
     assert response.status_code == 200
     actual = response.body
     assert INPUT_BTN in actual
+
+
+@step('a journal detail page')
+def journal_detail_page(step):
+    response = world.app.get('/detail/1')
+    assert response.status_code == 200
+    assert 'This is a post' in response.body
+
+
+@step('I click on the edit button')
+def click_on_the_edit_button(step):
+    login_helper('admin', 'secret', world.app)
+    world.make_an_entry(world.app)
+    response = world.app.get('/detail/1')
+    assert response.status_code == 200
+    response.click(href='/edit/1')
+    assert response.status_code == 200
+
+
+@step('I am taken to the edit page')
+def journal_edit_page(step):
+    login_helper('admin', 'secret', world.app)
+    response = world.app.get('/edit/1')
+    assert response.status_code == 200
+    actual = response.body
+    assert INPUT_BTN in actual
+
+
+@step('a journal edit form')
+def journal_edit_form(step):
+    login_helper('admin', 'secret', world.app)
+    world.make_an_entry(world.app)
+    response = world.app.get('/')
+    response.click(href='/detail/1')
+    assert response.status_code == 200
+
+
+@step('I type in the edit box')
+def type_edit_box(step):
+    login_helper('admin', 'secret', world.app)
+    world.make_an_entry(world.app)
+    response = world.app.get('/edit/1')
+    assert response.form
+
+
+@step('I can use Markdown to format my post')
+def get_md_page(step):
+    login_helper('admin', 'secret', world.app)
+    world.make_an_entry(world.app)
+    response = world.app.get('/detail/1')
+    assert response.status_code == 200
+    assert '<h2>This is a post</h2>' in response.body
+
+
+@step('I look at a post')
+def look_at_a_post(step):
+    response = world.app.get('/detail/1')
+    assert response.status_code == 200
+    assert 'This is a post' in response.body
+
+
+@step('I can see colorized code samples')
+def get_colorized_code(step):
+    response = world.app.get('/detail/1')
+    assert response.status_code == 200
+    assert 'class="codehilite"' in response.body
