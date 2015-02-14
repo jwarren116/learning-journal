@@ -1,6 +1,6 @@
 2/12/15
 =======
-I have added additional BDD tests using Lettuce. Additionally, an editing feature, as well as the ability to use Markdown and colorized fenced code have been added.
+I have added additional BDD tests using Lettuce. Additionally, an editing feature, as well as the ability to use Markdown and colorized fenced code have been added. For some of the features implemented in this milestone I collaborated with Nick Draper, Jake Anderson, and Nick Becker.
 
 
 1/31/15
