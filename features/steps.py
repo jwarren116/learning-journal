@@ -14,26 +14,6 @@ settings = {'db': TEST_DSN}
 INPUT_BTN = '<input class="btn" type="submit" value="Share" name="Share"/>'
 
 
-# @world.absorb
-# def make_an_entry(app):
-#     entry_data = {
-#         'title': 'Hello there',
-#         'text': 'This is a post',
-#     }
-#     response = app.post('/add', params=entry_data, status='3*')
-#     return response
-
-
-# @world.absorb
-# def make_md_entry(app):
-#     entry_data = {
-#         'title': 'Hello there',
-#         'text': '##This is a heading',
-#     }
-#     response = app.post('/add', params=entry_data, status='3*')
-#     return response
-
-
 @world.absorb
 def make_an_entry(app):
     entry_data = {
