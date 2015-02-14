@@ -1,0 +1,20 @@
+{% extends "base.jinja2" %}
+
+{% block body %}
+
+
+<form action="{{ request.route_url('edit', id=entry.id) }}" method="POST">
+  <div>
+    <label for="title">Title</label></br>
+    <input type="text" size="30" name="title" id="title" value="{{ entry.title }}"/>
+  </div>
+  <div>
+    <label for="text">Text</label></br>
+    <textarea name="text" id="text" rows="5" cols="80">{{ entry.text }}</textarea>
+  </div>
+  <div>
+    <input class="btn" type="submit" value="Share" name="Share"/>
+  </div>
+</form>
+
+{% endblock %}

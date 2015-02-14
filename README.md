@@ -1,3 +1,14 @@
+2/12/15
+=======
+I have added additional BDD tests using Lettuce. Additionally, an editing feature, as well as the ability to use Markdown and colorized fenced code have been added. For some of the features implemented in this milestone I collaborated with Nick Draper, Jake Anderson, and Nick Becker.
+
+
+1/31/15
+=======
+I have included generic faux-entries in my mockups. These mockups help me to see what the ultimate product will look like.
+
+
+
 Python Dev Accelerator Learning Journal
 =======================================
 
@@ -11,13 +22,3 @@ Create a Repository in GitHub called learning-journal.  The repository should ha
 * The home page should also have a UI element that allows you to start to create a new entry. It should like to the create form page.
 * The detail page should have a UI element that allows editing the entry.  It should link to the edit form page.
 * There should be a UI element that leads back to the home page from anywhere in the site.
-
-You should make an effort to make the pages in your mockup look as unified as possible.  Ensure that there is a common header, footer and navigation system shared among all the pages.  
-
-You must also include a CSS stylesheet in your repository that contains the styles needed to display the site.  The HTML mockup pages should use this stylesheet via a "link" tag in the HTML head section.
-
-You may not use any pre-existing CSS framework, like Bootstrap or Zurb Foundation.
-
-1/31/15
-=======
-I have included generic faux-entries in my mockups. These mockups help me to see what the ultimate product will look like.
