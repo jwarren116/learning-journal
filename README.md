@@ -1,3 +1,10 @@
+2/17/15
+=======
+##Step 5 User Stories
+* As an author I want to submit my new and edited entries via AJAX so I don't have to wait for a page reload.
+* As an author I want to be able to tweet the title of a post and a link to that post by pressing a button so that I can share what I've learned with my followers.
+
+
 2/12/15
 =======
 I have added additional BDD tests using Lettuce. Additionally, an editing feature, as well as the ability to use Markdown and colorized fenced code have been added. For some of the features implemented in this milestone I collaborated with Nick Draper, Jake Anderson, and Nick Becker.
