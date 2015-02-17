@@ -6,11 +6,27 @@
     <link href='http://fonts.googleapis.com/css?family=Lato:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
     <link href="/static/codehilite.css" rel="stylesheet" type="text/css">
     <link href="/static/style.css" rel="stylesheet" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <!--[if lt IE 9]>
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+    <script>
+      
+      $( document ).ready( function() {
+        $( '#editForm' ).hide();
+      });
+
+      $( function() {
+        $('#editBtn').click( function( event ) {
+          event.preventDefault();
+          $('#detailForm').hide( 'fast' );
+          $('#editForm').show( 'fast' );
+        });
+      });
+
+      
+    </script>
   </head>
-  
   <body>
     <header>
       <nav>
@@ -25,11 +41,10 @@
       </nav>
     </header>
     <main>
-      <section>
-
-      {% block body %}{% endblock %}
-      
-      </section>
+    <section>
+    {% block body %}
+    {% endblock %}
+    </section>
     </main>
     <footer>
       <p><small>James Warren's Learning Journal</small></p>

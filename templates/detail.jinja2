@@ -2,18 +2,39 @@
 
 {% block body %}
 
-<article id="title={{ entry.id }}">
-  <h1 class="headingLink">{{ entry.title }}</h1>
-  <p><small>{{ entry.created.strftime('%b. %d, %Y') }}</small>
-  <div>
-    {{ entry.text|markdown|safe }}
-    </br>
-    {% if request.authenticated_userid %}
-      <a href="/edit/{{ entry.id }}" class="btn">Edit Post</a></br>
-    {% endif %}
-    </br>
-    <hr class="titleDivider">
-  </div>
-</article>
+<div id="detailForm">
+  <article id="title={{ entry.id }}">
+    <h1 class="headingLink">{{ entry.title }}</h1>
+    <p><small>{{ entry.created.strftime('%b. %d, %Y') }}</small></p>
+    <div>
+      {{ entry.text|markdown|safe }}
+      </br>
+        {% if request.authenticated_userid %}
+          <a href="/edit/{{ entry.id }}" id="editBtn"class="btn">Edit Post</a>
+          </br>
+        {% endif %}
+      </br>
+      <hr class="titleDivider">
+    </div>
+  </article>
+</div>
+
+{% if request.authenticated_userid %}
+<div id="editForm">
+  <form action="{{ request.route_url('edit', id=entry.id) }}" method="POST">
+    <div>
+      <label for="title">Title</label></br>
+      <input type="text" size="30" name="title" id="title" value="{{ entry.title }}"/>
+    </div>
+    <div>
+      <label for="text">Text</label></br>
+      <textarea name="text" id="text" rows="5" cols="80">{{ entry.text }}</textarea>
+    </div>
+    <div>
+      <input class="btn" type="submit" value="Share" name="Share"/>
+    </div>
+  </form>
+</div>
+{% endif %}
 
 {% endblock %}
