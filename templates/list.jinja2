@@ -4,21 +4,26 @@
 <h1>My Python Journal</h1>
 <hr>
 {% if request.authenticated_userid %}
-<aside>
-<form action="{{ request.route_url('add') }}" method="POST">
-  <div>
-    <label for="title">Title</label></br>
-    <input type="text" size="30" name="title" id="title"/>
-  </div>
-  <div>
-    <label for="text">Text</label></br>
-    <textarea name="text" id="text" rows="5" cols="80"></textarea>
-  </div>
-  <div>
-    <input class="btn" type="submit" value="Share" name="Share"/>
-  </div>
-</form>
-</aside>
+
+<button id="createBtn" class="btn">Create Post!</button>
+
+<div class="createForm">
+  <aside>
+  <form action="{{ request.route_url('add') }}" method="POST">
+    <div>
+      <label for="title">Title</label></br>
+      <input type="text" size="30" name="title" id="title"/>
+    </div>
+    <div>
+      <label for="text">Text</label></br>
+      <textarea name="text" id="text" rows="5" cols="80"></textarea>
+    </div>
+    <div>
+      <input class="btn" type="submit" value="Share" name="Share"/>
+    </div>
+  </form>
+  </aside>
+</div>
 {% endif %}
 {% for entry in entries %}
 <article id="entry={{entry.id}}">
@@ -26,10 +31,6 @@
   <p><small>{{ entry.created.strftime('%b. %d, %Y') }}</small>
   <div>
     {{ entry.text|markdown|safe }}
-    </br>
-      {% if request.authenticated_userid %}
-        <a href="/edit/{{ entry.id }}" class="btn">Edit Post</a></br>
-      {% endif %}
     </br>
     <hr class="titleDivider">
   </div>

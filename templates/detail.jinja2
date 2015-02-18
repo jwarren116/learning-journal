@@ -2,7 +2,7 @@
 
 {% block body %}
 
-<div id="detailForm">
+<div class="detailForm">
   <article id="title={{ entry.id }}">
     <h1 class="headingLink">{{ entry.title }}</h1>
     <p><small>{{ entry.created.strftime('%b. %d, %Y') }}</small></p>
@@ -10,7 +10,7 @@
       {{ entry.text|markdown|safe }}
       </br>
         {% if request.authenticated_userid %}
-          <a href="/edit/{{ entry.id }}" id="editBtn"class="btn">Edit Post</a>
+          <button id="editBtn" class="btn">Edit Post</button>
           </br>
         {% endif %}
       </br>
@@ -20,7 +20,7 @@
 </div>
 
 {% if request.authenticated_userid %}
-<div id="editForm">
+<div class="editForm">
   <form action="{{ request.route_url('edit', id=entry.id) }}" method="POST">
     <div>
       <label for="title">Title</label></br>
@@ -31,10 +31,21 @@
       <textarea name="text" id="text" rows="5" cols="80">{{ entry.text }}</textarea>
     </div>
     <div>
-      <input class="btn" type="submit" value="Share" name="Share"/>
+      <input id="submitBtn" class="btn" type="submit" value="Share" name="Share"/>
     </div>
   </form>
+  <button id="cancelBtn" class="btn">Cancel</button>
 </div>
+<script>
+$( function() {
+  $('#submitBtn').click( function( event ) {
+    event.preventDefault();
+    $.post( "{{ request.route_url('edit', id=entry.id) }}", function() {
+
+    });
+  });
+});
+</script>
 {% endif %}
 
 {% endblock %}

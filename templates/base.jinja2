@@ -7,25 +7,10 @@
     <link href="/static/codehilite.css" rel="stylesheet" type="text/css">
     <link href="/static/style.css" rel="stylesheet" type="text/css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="/static/journal.js"></script>
     <!--[if lt IE 9]>
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <script>
-      
-      $( document ).ready( function() {
-        $( '#editForm' ).hide();
-      });
-
-      $( function() {
-        $('#editBtn').click( function( event ) {
-          event.preventDefault();
-          $('#detailForm').hide( 'fast' );
-          $('#editForm').show( 'fast' );
-        });
-      });
-
-      
-    </script>
   </head>
   <body>
     <header>
