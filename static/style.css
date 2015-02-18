@@ -78,6 +78,7 @@ CLASS STUFF
     text-decoration: none;
     border: 1px solid;
     padding: 4px;
+    margin-top: 2px;
 }
 
 .btn:active {
@@ -101,4 +102,12 @@ CLASS STUFF
 
 .headingLink:hover {
     color: #5D96B0;
+}
+
+.createForm {
+    display: none;
+}
+
+.editForm {
+    display: none;
 }
