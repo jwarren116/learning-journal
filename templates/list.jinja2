@@ -9,7 +9,7 @@
 
 <div class="createForm">
   <aside>
-  <form action="{{ request.route_url('add') }}" method="POST">
+  <form action="" method="POST">
     <div>
       <label for="title">Title</label></br>
       <input type="text" size="30" name="title" id="title"/>
@@ -19,11 +19,12 @@
       <textarea name="text" id="text" rows="5" cols="80"></textarea>
     </div>
     <div>
-      <input class="btn" type="submit" value="Share" name="Share"/>
+      <input id="addBtn" class="btn" type="submit" value="Share" name="Share"/>
     </div>
   </form>
   </aside>
 </div>
+
 {% endif %}
 {% for entry in entries %}
 <article id="entry={{entry.id}}">

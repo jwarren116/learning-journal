@@ -3,7 +3,7 @@
 {% block body %}
 
 <div class="detailForm">
-  <article id="title={{ entry.id }}">
+  <article id="{{ entry.id }}">
     <h1 class="headingLink">{{ entry.title }}</h1>
     <p><small>{{ entry.created.strftime('%b. %d, %Y') }}</small></p>
     <div>
@@ -21,31 +21,19 @@
 
 {% if request.authenticated_userid %}
 <div class="editForm">
-  <form action="{{ request.route_url('edit', id=entry.id) }}" method="POST">
-    <div>
-      <label for="title">Title</label></br>
-      <input type="text" size="30" name="title" id="title" value="{{ entry.title }}"/>
-    </div>
-    <div>
-      <label for="text">Text</label></br>
-      <textarea name="text" id="text" rows="5" cols="80">{{ entry.text }}</textarea>
-    </div>
-    <div>
-      <input id="submitBtn" class="btn" type="submit" value="Share" name="Share"/>
-    </div>
-  </form>
+  <div>
+    <label for="title">Title</label></br>
+    <input type="text" size="30" name="title" id="title" value="{{ entry.title }}"/>
+  </div>
+  <div>
+    <label for="text">Text</label></br>
+    <textarea name="text" id="text" rows="5" cols="80">{{ entry.text }}</textarea>
+  </div>
+  <div>
+    <input id="submitBtn" class="btn" type="submit" value="Share" name="Share"/>
+  </div>
   <button id="cancelBtn" class="btn">Cancel</button>
 </div>
-<script>
-$( function() {
-  $('#submitBtn').click( function( event ) {
-    event.preventDefault();
-    $.post( "{{ request.route_url('edit', id=entry.id) }}", function() {
-
-    });
-  });
-});
-</script>
 {% endif %}
 
 {% endblock %}
