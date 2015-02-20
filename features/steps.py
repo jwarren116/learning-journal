@@ -11,7 +11,9 @@ from pyramid import testing
 
 TEST_DSN = 'dbname=test_learning_journal user=jwarren'
 settings = {'db': TEST_DSN}
-INPUT_BTN = '<input class="btn" type="submit" value="Share" name="Share"/>'
+INPUT_BTN = '<input id="addBtn" class="btn" type="submit" value="Share" name="Share"/>'
+EDIT_BTN = '<button id="editBtn" class="btn">Edit Post</button>'
+SUBMIT_BTN = '<input id="submitBtn" class="btn" type="submit" value="Share" name="Share"/>'
 
 
 @world.absorb
@@ -25,7 +27,23 @@ def make_an_entry(app):
         return x
 ```''',
     }
-    response = app.post('/add', params=entry_data, status='3*')
+    response = app.post('/add', params=entry_data, status='*')
+    return response
+
+
+@world.absorb
+def make_an_update(app):
+    entry_data = {
+        'id': 1,
+        'title': 'This is an updated entry',
+        'text': '''##This is an updated post
+
+```python
+    def new_func(x):
+        return new_x
+```''',
+    }
+    response = app.post('/edit', params=entry_data, status='*')
     return response
 
 
@@ -117,17 +135,16 @@ def click_on_the_edit_button(step):
     world.make_an_entry(world.app)
     response = world.app.get('/detail/1')
     assert response.status_code == 200
-    response.click(href='/edit/1')
-    assert response.status_code == 200
+    assert EDIT_BTN in response.body
 
 
-@step('I am taken to the edit page')
+@step('the edit form displays')
 def journal_edit_page(step):
     login_helper('admin', 'secret', world.app)
-    response = world.app.get('/edit/1')
+    response = world.app.get('/detail/1')
     assert response.status_code == 200
-    actual = response.body
-    assert INPUT_BTN in actual
+    assert SUBMIT_BTN in response.body
+    assert response.form
 
 
 @step('a journal edit form')
@@ -139,11 +156,11 @@ def journal_edit_form(step):
     assert response.status_code == 200
 
 
-@step('I type in the edit box')
+@step('I edit a post')
 def type_edit_box(step):
     login_helper('admin', 'secret', world.app)
     world.make_an_entry(world.app)
-    response = world.app.get('/edit/1')
+    response = world.app.get('/detail/1')
     assert response.form
 
 
@@ -168,3 +185,24 @@ def get_colorized_code(step):
     response = world.app.get('/detail/1')
     assert response.status_code == 200
     assert 'class="codehilite"' in response.body
+
+
+@step('the page does not reload')
+def does_not_reload(step):
+    login_helper('admin', 'secret', world.app)
+    response = world.app.get('/detail/1')
+    assert response.status_code == 200
+    world.make_an_update(world.app)
+    assert '<h2>This is an updated entry</h2>' in response.body
+
+
+@step('I click the Tweet button')
+def tweet_button(step):
+    response = world.app.get('/detail/1')
+    response.click(href='https://twitter.com/share')
+    pass
+
+
+@step('my post is Tweeted')
+def tweet_success(step):
+    pass
