@@ -28,9 +28,8 @@ $( document ).ready( function() {
     $(".createForm").hide('slow');
   }
 
-
-
 $("#submitBtn").click( function( event ) {
+    event.preventDefault();
     update_post();
   });
 
@@ -57,10 +56,6 @@ $("#submitBtn").click( function( event ) {
     $(".editForm").after(updated);
     $(".editForm").hide('slow');
   }
-
-
-
-
 
   $( function() {
     $('#editBtn').click( function() {
