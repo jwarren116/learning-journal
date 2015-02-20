@@ -6,22 +6,23 @@
   <article id="{{ entry.id }}">
     <h1 class="headingLink">{{ entry.title }}</h1>
     <p><small>{{ entry.created.strftime('%b. %d, %Y') }}</small></p>
-    <div>
       {{ entry.text|markdown|safe }}
       </br>
         {% if request.authenticated_userid %}
           <button id="editBtn" class="btn">Edit Post</button>
+            <a href="https://twitter.com/share" class="twitter-share-button" data-text="Check out my new post: {{ entry.title }}">Tweet</a>            
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
           </br>
         {% endif %}
       </br>
       <hr class="titleDivider">
-    </div>
   </article>
 </div>
 
 {% if request.authenticated_userid %}
 <div class="editForm">
   <div>
+    <form>
     <label for="title">Title</label></br>
     <input type="text" size="30" name="title" id="title" value="{{ entry.title }}"/>
   </div>
@@ -31,6 +32,7 @@
   </div>
   <div>
     <input id="submitBtn" class="btn" type="submit" value="Share" name="Share"/>
+    </form>
   </div>
   <button id="cancelBtn" class="btn">Cancel</button>
 </div>
