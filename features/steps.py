@@ -199,15 +199,13 @@ def does_not_reload(step):
     assert '<h2>This is an updated post</h2>' in updated_response.body
 
 
-
 @step('a detail page with a Twitter button')
-def journal_detail_page(step):
+def journal_detail_page_twitter(step):
     login_helper('admin', 'secret', world.app)
     world.make_an_entry(world.app)
     response = world.app.get('/detail/1')
     assert response.status_code == 200
     assert TWITTER in response.body
-
 
 
 @step('I click the Tweet button')
@@ -218,4 +216,5 @@ def tweet_button(step):
 
 @step('my post is Tweeted')
 def tweet_success(step):
-    pass
+    response = world.app.get('/detail/1')
+    assert TWITTER in response.body
