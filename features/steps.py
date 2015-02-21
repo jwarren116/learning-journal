@@ -14,6 +14,7 @@ settings = {'db': TEST_DSN}
 INPUT_BTN = '<input id="addBtn" class="btn" type="submit" value="Share" name="Share"/>'
 EDIT_BTN = '<button id="editBtn" class="btn">Edit Post</button>'
 SUBMIT_BTN = '<input id="submitBtn" class="btn" type="submit" value="Share" name="Share"/>'
+TWITTER = 'href="https://twitter.com/share"'
 
 
 @world.absorb
@@ -190,17 +191,29 @@ def get_colorized_code(step):
 @step('the page does not reload')
 def does_not_reload(step):
     login_helper('admin', 'secret', world.app)
+    world.make_an_entry(world.app)
     response = world.app.get('/detail/1')
     assert response.status_code == 200
     world.make_an_update(world.app)
-    assert '<h2>This is an updated entry</h2>' in response.body
+    updated_response = world.app.get('/detail/1')
+    assert '<h2>This is an updated post</h2>' in updated_response.body
+
+
+
+@step('a detail page with a Twitter button')
+def journal_detail_page(step):
+    login_helper('admin', 'secret', world.app)
+    world.make_an_entry(world.app)
+    response = world.app.get('/detail/1')
+    assert response.status_code == 200
+    assert TWITTER in response.body
+
 
 
 @step('I click the Tweet button')
 def tweet_button(step):
     response = world.app.get('/detail/1')
-    response.click(href='https://twitter.com/share')
-    pass
+    assert TWITTER in response.body
 
 
 @step('my post is Tweeted')
