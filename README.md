@@ -15,6 +15,9 @@ I have added additional BDD tests using Lettuce. Additionally, an editing featur
 I have included generic faux-entries in my mockups. These mockups help me to see what the ultimate product will look like.
 
 
+###Collaborators
+Nick Draper, Nick Becker, Jake Anderson
+
 
 Python Dev Accelerator Learning Journal
 =======================================
