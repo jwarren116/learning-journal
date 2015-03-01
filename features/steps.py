@@ -2,19 +2,32 @@ from lettuce import before, after, world, step
 import datetime
 import os
 from contextlib import closing
-
-from journal import connect_db
-from journal import DB_SCHEMA
-from journal import INSERT_ENTRY
-
 from pyramid import testing
+import psycopg2
 
-TEST_DSN = 'dbname=test_learning_journal user=jwarren'
+TEST_DSN = 'postgresql://jwarren:@localhost:5432/learning_journal'
 settings = {'db': TEST_DSN}
 INPUT_BTN = '<input id="addBtn" class="btn" type="submit" value="Share" name="Share"/>'
 EDIT_BTN = '<button id="editBtn" class="btn">Edit Post</button>'
 SUBMIT_BTN = '<input id="submitBtn" class="btn" type="submit" value="Share" name="Share"/>'
 TWITTER = 'href="https://twitter.com/share"'
+
+
+DB_SCHEMA = """
+CREATE TABLE IF NOT EXISTS entries (
+    id serial PRIMARY KEY,
+    title VARCHAR (127) NOT NULL,
+    text TEXT NOT NULL,
+    created TIMESTAMP NOT NULL
+)
+"""
+
+INSERT_ENTRY = "INSERT INTO entries (title, text, created) VALUES(%s, %s, %s)"
+
+
+def connect_db(settings):
+    """Returns a connection to the configured database"""
+    return psycopg2.connect(settings['db'])
 
 
 @world.absorb
