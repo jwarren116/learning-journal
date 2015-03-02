@@ -1,5 +1,4 @@
 from lettuce import before, after, world, step
-import datetime
 import os
 from contextlib import closing
 from pyramid import testing
